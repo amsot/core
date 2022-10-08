@@ -2,18 +2,29 @@ package hello.core.order;
 
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
+import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
+import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class OrderServiceImpl implements  OrderService{
 
-    private final MemberService memberService = new MemberServiceImpl();
-    private final DiscountPolicy discountPolicy  = new FixDiscountPolicy();
+    private final MemberRepository memberRepository;
+    // 고정 할인 -> 정률 할인으로 변경 시 OrderServiceImpl 소스 수정필요
+//    private final DiscountPolicy discountPolicy  = new FixDiscountPolicy();
+//    private final DiscountPolicy discountPolicy  = new RateDiscountPolicy();
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
-        Member member  = memberService.findMember(memberId);
+        Member member  = memberRepository.findById(memberId);
         int discountPrice = discountPolicy.discount(member,itemPrice);
 
         return new Order(memberId,itemName,itemPrice,discountPrice);
