@@ -8,15 +8,17 @@ import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderServiceImpl implements  OrderService{
 
     private final MemberRepository memberRepository;
-    // 고정 할인 -> 정률 할인으로 변경 시 OrderServiceImpl 소스 수정필요
-//    private final DiscountPolicy discountPolicy  = new FixDiscountPolicy();
-//    private final DiscountPolicy discountPolicy  = new RateDiscountPolicy();
     private final DiscountPolicy discountPolicy;
-
+        // 고정 할인 -> 정률 할인으로 변경 시 OrderServiceImpl 소스 수정필요
+    //    private final DiscountPolicy discountPolicy  = new FixDiscountPolicy();
+    //    private final DiscountPolicy discountPolicy  = new RateDiscountPolicy();
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
