@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
@@ -7,19 +8,21 @@ import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+//@RequiredArgsConstructor //final이 붙은 변수를 갖는 생성자를 만들어줌
 public class OrderServiceImpl implements  OrderService{
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
-        // 고정 할인 -> 정률 할인으로 변경 시 OrderServiceImpl 소스 수정필요
+         // 고정 할인 -> 정률 할인으로 변경 시 OrderServiceImpl 소스 수정필요
     //    private final DiscountPolicy discountPolicy  = new FixDiscountPolicy();
     //    private final DiscountPolicy discountPolicy  = new RateDiscountPolicy();
-    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
