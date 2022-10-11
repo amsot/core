@@ -1,0 +1,35 @@
+package hello.core.scope;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+public class SingletonTest {
+
+    @Test
+    void singletonBeanFind(){
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(SingletonBean.class);
+        SingletonBean singletonBean1 = ac.getBean(SingletonBean.class);
+        SingletonBean singletonBean2 = ac.getBean(SingletonBean.class);
+        System.out.println(singletonBean1);
+        System.out.println(singletonBean2);
+        Assertions.assertSame(singletonBean2, singletonBean1);
+
+        ac.close();
+    }
+    static class SingletonBean{
+        @PostConstruct
+        public  void init(){
+            System.out.println("SingletonBean.init");
+        }
+
+        @PreDestroy
+        public  void destroy(){
+            System.out.println("SingletonBean.destroy");
+        }
+    }
+
+}

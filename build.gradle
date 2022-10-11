@@ -27,6 +27,8 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok:1.18.24'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+	implementation 'javax.inject:javax.inject:1'
 }
 
 tasks.named('test') {
